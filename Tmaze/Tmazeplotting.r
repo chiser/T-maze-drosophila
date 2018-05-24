@@ -79,15 +79,20 @@ idGroup$median <- sapply(seq_len(nrow(idGroup)), function(i) {
 #Tmaze <- Tmaze[with(Tmaze, order(Fly.line)), ]
 ###### Ordering data by putting first the Genetic controls and the the lines with their ATR controls in a descending order by mean
 
-library(dplyr)
+#library(dplyr)
 
 idGroup$Treatment <- ordered(idGroup$Treatment, levels = c("Genetic Control", "Experimental ATR", "Experimental Co")) 
 idGroup <- idGroup[order(idGroup$Treatment), ]
+#idGroup$rank <- (idGroup$Treatment!="66")*1
 
+new_order <- order(idGroup$median, decreasing = T)
+idGroup <- idGroup[new_order,]
+idGroup$rank <- grepl("Gr", idGroup[[1]])*1
+new_order <- order(idGroup$rank, decreasing = T)
+idGroup <- idGroup[new_order,]
 
-idGroup$rank <- (idGroup$Treatment!="Genetic Control")*1
-idGroup <- idGroup %>% group_by(LINE) %>% mutate(temp=mean(mean)) %>% 
-  ungroup %>% arrange(rank, -temp) %>% select(-rank, -temp)
+#idGroup <- idGroup %>% group_by(LINE) %>% mutate(temp=mean(mean)) %>% 
+# ungroup %>% arrange(rank, -temp) %>% select(-rank, -temp)
 
 
 ###### The merge statement in base R can perform the equivalent of inner and left joins, as well as right and full outer joins, which are unavailable in sqldf.
@@ -122,7 +127,7 @@ idGroup <- idGroup %>% group_by(LINE) %>% mutate(temp=mean(mean)) %>%
 #    `Mean` DESC;
 #")  
 
-###### Order the Tmaze data in the way the idGroup table is ordered. It looks fine in the Global environment and in the plots. However opening the table the order isn´t there
+###### Order the Tmaze data in the way the idGroup table is ordered. It looks fine in the Global environment and in the plots. However opening the table the order isnÂ´t there
 
 levels <- as.character(idGroup$Group)
 Tmaze$Fly.line <- factor(Tmaze$Fly.line, levels = levels)
