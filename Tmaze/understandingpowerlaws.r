@@ -1,33 +1,31 @@
 
 
-y= function (a,x,k){
-  a*x^(-k)
-}
+library(pwr)
 
-xCoordinate<- 1:100
+##### Import the csv file into R
+Tmaze <- read.csv(file.choose(), header = TRUE, sep = ";", quote = "\"",dec = "," )
 
-powerlaw = vector("numeric", length=100)
+### Select the PIs from the Tmaze dataframe
+fly_line1 <- Tmaze$PI[idGroup$Group[5]==Tmaze$Fly.line]
+fly_line2 <- Tmaze$PI[idGroup$Group[23]==Tmaze$Fly.line]
 
-for (x in xCoordinate){
-  
-  powerlaw[x]<-y(2,x,2)
-  
-}
+### Get the means to calculate the effect size (d)
 
-plot(powerlaw)
-plot(log(powerlaw)~log(xCoordinate))
+mu1 <- mean(fly_line1)
+mu2 <- mean(fly_line2)
 
-############## This is by making an iteration over the exponent k. You get a line just in a log-normal plot
-### if a<0 it tends from negative to zero, if a<0 tends from positive to zero
-### if x<0 it has a neg and positive power law and for x>0 only one (0 not possible). If x=+1/-1 isn´t a power law rather a constant. 
-### For 0<x<1 the curve increase at the end (inverted). For increasing (when x>1) or decreasing (when 0<x<1) x, the power law curve is steeper
-### k just changes the scale I think, but the shape stays so
-###  power-law x^{-a} has a well-defined mean over x \in [1,\infty] only if a > 2 , and it has a finite variance only if a >3; 
+both <- c(fly_line1,fly_line2)
 
-############# By making an iteration over the value x is how you get the straight line in a log-log plot (real powerlaw)
-## The higher k is the steepest the slope is
+n <- length(both)/2
+
+###Cohen suggests that d values of 0.2, 0.5, and 0.8 represent small, medium, and large effect sizes respectively. 
+
+d <- abs(mu1 - mu2)/ sd(both)
 
 
+## Perform power test
+
+pwr.t.test(d=d,n=NULL,power=0.8,sig.level=0.05,type="two.sample",alternative="greater")
 
 
 
