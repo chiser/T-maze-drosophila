@@ -18,6 +18,9 @@ For running the results from the T-maze with red light illumination you just nee
 	5. Look in your current directory for the pdf file (if you do not know where, you can type getwd() in the 		command line).
 
 The pdf will contain boxplots for the PIs and weighted PI calculations for:
+
 	-Both experiments together
+	
 	-First test
+	
 	-Second test
