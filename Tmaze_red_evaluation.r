@@ -69,6 +69,16 @@ idGroup$median <- sapply(seq_len(nrow(idGroup)), function(i) {
   median(Tmaze$PI[idGroup$Group[i]==Tmaze$Fly.line])
 })
 
+idGroup$std <- sapply(seq_len(nrow(idGroup)), function(i) { 
+  sd(Tmaze$PI[idGroup$Group[i]==Tmaze$Fly.line])
+})
+
+idGroup$experiments_n <- sapply(seq_len(nrow(idGroup)), function(i) { 
+  length(Tmaze$PI[idGroup$Group[i]==Tmaze$Fly.line])
+})
+
+idGroup$se <- idGroup$std / sqrt(idGroup$experiments_n)
+
 
 ##### To order the groups for plotting. This will only work nicely if I put a "1" in front of my control line so that it put it the first
 
@@ -122,3 +132,17 @@ points(Tmaze$weightedPI2 ~ Tmaze$Fly.line)
 
 dev.off()
 
+setEPS()
+postscript("redTmaze_barplot.eps")
+par(mar=c(9,4,1,1))
+barCenters <- barplot(height = idGroup$mean,
+                      names.arg = as.character(idGroup$LINE),
+                      beside = true, las = 2,ylim=c(-1,1),
+                      cex.names = 0.75,
+                      main = "Screen T-maze with red light",
+                      ylab = "PI",
+                      border = "black", axes = TRUE)
+
+segments(barCenters, idGroup$mean - idGroup$se, barCenters,
+         idGroup$mean + idGroup$se, lwd = 1.5)
+dev.off()

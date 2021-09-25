@@ -15,7 +15,10 @@ For running the results from the T-maze with red light illumination you just nee
 	The name of the columns is only relevant in the case of Fly.line.
 
 	4. A message with "Enter the name of the output file" will prompt in the command line in R Studio: enter the 		name for the pdf file that is going to contain all the graphs.
+	
 	5. Look in your current directory for the pdf file (if you do not know where, you can type getwd() in the 		command line).
+
+	6. Look in your current directory for an eps file names redTmaze_barplot.eps with the barplots.
 
 The pdf will contain boxplots for the PIs and weighted PI calculations for:
 
